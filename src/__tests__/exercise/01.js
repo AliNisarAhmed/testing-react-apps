@@ -13,7 +13,24 @@ global.IS_REACT_ACT_ENVIRONMENT = true
 
 test('counter increments and decrements when the buttons are clicked', () => {
   // 🐨 create a div to render your component to (💰 document.createElement)
-  //
+  const container = document.createElement('div');
+  document.body.append(container); 
+  const root = createRoot(container);
+  act(() => root.render(<Counter />))
+
+  const [decrement, increment] = container.querySelectorAll('button')
+  const message = container.firstChild.querySelector('div')
+
+  const event = new MouseEvent('click', { bubbles: true });
+
+  expect(message.textContent).toBe('Current count: 0')
+  act(() => increment.dispatchEvent(event))
+  expect(message.textContent).toBe('Current count: 1')
+  act(() => decrement.dispatchEvent(event))
+  expect(message.textContent).toBe('Current count: 0')
+
+  container.remove();
+
   // 🐨 append the div to document.body (💰 document.body.append)
   //
   // 🐨 use createRoot to render the <Counter /> to the div
